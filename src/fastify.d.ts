@@ -18,6 +18,7 @@ declare module "fastify" {
       books: {
         getBooksHandler: GetBooksHandler;
         getBookHandler: GetBookHandler;
+        createBookHandler: CreateBookHandler;
       };
       authors: {
         getAuthorsHandler: GetAuthorsHandler;

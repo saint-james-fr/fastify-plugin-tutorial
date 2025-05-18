@@ -3,6 +3,7 @@ import autoload from "@fastify/autoload";
 import { handlers } from "./use-cases";
 import { repositories } from "./infrastructure/repositories";
 import path from "path";
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 
 const dirName = import.meta.dirname;
 const pluginsDir = path.join(dirName, "infrastructure/plugins");
@@ -17,6 +18,17 @@ const app = fastify({
     },
   },
 });
+
+// Set up Zod type provider
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
+
+// Add type provider to Fastify instance
+declare module "fastify" {
+  interface FastifyInstance {
+    withTypeProvider<T extends ZodTypeProvider>(): FastifyInstance & T;
+  }
+}
 
 app.register(autoload, {
   dir: pluginsDir,

@@ -12,7 +12,11 @@ export class BookRepository implements IBookRepository {
     return this.db.books.find((book) => book.id === id) ?? null;
   }
 
-  async getBooksByAuthorId(authorId: number) {
-    return this.db.books.filter((book) => book.authorId === authorId);
+  async createBook(book: Book) {
+    if (this.db.books.find((b) => b.id === book.id)) {
+      throw new Error("Book already exists");
+    }
+    this.db.books.push(book);
+    return book;
   }
 }
