@@ -1,0 +1,17 @@
+{
+  "name": "fastify-plugin-tutorial",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npx tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^6.3.0",
+    "@types/node": "^22.15.18",
+    "fastify": "^5.3.3",
+    "fastify-plugin": "^5.0.1",
+    "pino-pretty": "^13.0.0"
+  }
+}
