@@ -3,7 +3,7 @@ import { BookRepository } from "./book.repository";
 import { AuthorRepository } from "./author.repository";
 import { type DB, kDB } from "../plugins/db.plugin";
 
-export const kRepositories = Symbol("repositories");
+export const kRepositories = Symbol.for("repositories");
 
 export type Repositories = {
   bookRepository: BookRepository;

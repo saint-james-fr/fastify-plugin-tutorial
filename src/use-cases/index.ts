@@ -9,7 +9,7 @@ import {
   kRepositories,
 } from "../infrastructure/repositories/index.js";
 
-export const kHandlers = Symbol("handlers");
+export const kHandlers = Symbol.for("handlers");
 
 export type Handlers = {
   books: {

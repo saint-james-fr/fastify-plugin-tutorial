@@ -2,7 +2,7 @@ import fp from "fastify-plugin";
 import { Book } from "../../domain/entities/book";
 import { Author } from "../../domain/entities/author";
 
-export const kDB = Symbol("db");
+export const kDB = Symbol.for("db");
 
 export type DB = {
   books: Book[];
