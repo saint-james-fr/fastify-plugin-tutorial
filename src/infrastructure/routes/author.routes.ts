@@ -1,5 +1,4 @@
-import { FastifyRequest } from "fastify";
-import fp from "fastify-plugin";
+import { FastifyInstance, FastifyPluginOptions, FastifyRequest } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { authorSchema } from "../../domain/schemas/author.schema";
 import { z } from "zod";
@@ -7,11 +6,19 @@ import {
   ShowRouteParams,
   showRouteParamsSchema,
 } from "../../domain/schemas/params.schema";
+import type { Handlers } from "../../use-cases/index";
+import fp from "fastify-plugin";
 
-export default fp(async function (fastify) {
-  const { getAuthorsHandler, getAuthorHandler } = fastify.handlers.authors;
+export default fp(function (
+  fastify: FastifyInstance,
+  _opts: FastifyPluginOptions
+) {
+  const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
 
-  fastify.withTypeProvider<ZodTypeProvider>().route({
+  const { getAuthorsHandler, getAuthorHandler } =
+    typedFastify.getDecorator<Handlers>("handlers").authors;
+
+  typedFastify.route({
     method: "GET",
     url: "/authors",
     schema: {
@@ -25,7 +32,7 @@ export default fp(async function (fastify) {
     },
   });
 
-  fastify.withTypeProvider<ZodTypeProvider>().route({
+  typedFastify.route({
     method: "GET",
     url: "/authors/:id",
     schema: {

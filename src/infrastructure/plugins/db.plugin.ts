@@ -1,4 +1,11 @@
 import fp from "fastify-plugin";
+import { Book } from "../../domain/entities/book";
+import { Author } from "../../domain/entities/author";
+
+export type DB = {
+  books: Book[];
+  authors: Author[];
+};
 
 export default fp(
   (fastify, _opts, done) => {

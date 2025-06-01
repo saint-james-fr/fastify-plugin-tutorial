@@ -1,4 +1,3 @@
-import fp from "fastify-plugin";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { bookSchema, postBookSchema } from "../../domain/schemas/book.schema";
 import { z } from "zod";
@@ -6,13 +5,18 @@ import {
   ShowRouteParams,
   showRouteParamsSchema,
 } from "../../domain/schemas/params.schema";
-import { FastifyRequest } from "fastify";
+import { FastifyInstance, FastifyPluginOptions, FastifyRequest } from "fastify";
+import type { Handlers } from "../../use-cases/index";
+import fp from "fastify-plugin";
 
-export default fp(async function (fastify) {
-  const { getBooksHandler, getBookHandler, createBookHandler } =
-    fastify.handlers.books;
-
+export default fp(function (
+  fastify: FastifyInstance,
+  _opts: FastifyPluginOptions
+) {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
+
+  const { getBooksHandler, getBookHandler, createBookHandler } =
+    typedFastify.getDecorator<Handlers>("handlers").books;
 
   typedFastify.route({
     method: "GET",

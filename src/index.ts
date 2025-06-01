@@ -1,34 +1,28 @@
 import fastify from "fastify";
 import autoload from "@fastify/autoload";
-import { handlers } from "./use-cases";
-import { repositories } from "./infrastructure/repositories";
+import handlers from "./use-cases";
+import repositories from "./infrastructure/repositories";
 import path from "path";
-import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from "fastify-type-provider-zod";
 
 const dirName = import.meta.dirname;
 const pluginsDir = path.join(dirName, "infrastructure/plugins");
 const routesDir = path.join(dirName, "infrastructure/routes");
 
-// Create the fastify instance with debug logging
 const app = fastify({
   logger: {
-    level: "debug", // Enable debug logging
+    level: "info",
     transport: {
-      target: "pino-pretty", // Makes logs more readable
+      target: "pino-pretty",
     },
   },
 });
 
-// Set up Zod type provider
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
-
-// Add type provider to Fastify instance
-declare module "fastify" {
-  interface FastifyInstance {
-    withTypeProvider<T extends ZodTypeProvider>(): FastifyInstance & T;
-  }
-}
 
 app.register(autoload, {
   dir: pluginsDir,
@@ -42,18 +36,16 @@ app.register(autoload, {
   forceESM: true,
 });
 
-// Start the boot sequence
 app.ready((err) => {
   if (err) {
     console.error(err);
     process.exit(1);
   }
 
-  app.listen({ port: 3000 }, (err, address) => {
+  app.listen({ port: 3000 }, (err, _address) => {
     if (err) {
       app.log.error(err);
       process.exit(1);
     }
-    app.log.info(`Server is running on ${address}`);
   });
 });
