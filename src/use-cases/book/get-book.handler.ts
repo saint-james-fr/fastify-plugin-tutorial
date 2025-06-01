@@ -1,4 +1,4 @@
-import type { IBookRepository } from "../../domain/interfaces/IBookRepository.ts";
+import type { IBookRepository } from "../../domain/interfaces/IBookRepository";
 
 export class GetBookHandler {
   constructor(private readonly bookRepository: IBookRepository) {}

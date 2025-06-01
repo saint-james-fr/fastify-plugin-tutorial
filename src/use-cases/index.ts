@@ -1,10 +1,15 @@
 import fp from "fastify-plugin";
-import { GetBookHandler } from "./book/get-book.handler.js";
-import { GetBooksHandler } from "./book/get-books.handler.js";
-import { GetAuthorHandler } from "./author/get-author.handler.js";
-import { GetAuthorsHandler } from "./author/get-authors.handler.js";
-import { CreateBookHandler } from "./book/create-book.handler.js";
-import type { Repositories } from "../infrastructure/repositories/index.ts";
+import { GetBookHandler } from "./book/get-book.handler";
+import { GetBooksHandler } from "./book/get-books.handler";
+import { GetAuthorHandler } from "./author/get-author.handler";
+import { GetAuthorsHandler } from "./author/get-authors.handler";
+import { CreateBookHandler } from "./book/create-book.handler";
+import {
+  type Repositories,
+  kRepositories,
+} from "../infrastructure/repositories/index.js";
+
+export const kHandlers = Symbol("handlers");
 
 export type Handlers = {
   books: {
@@ -21,9 +26,9 @@ export type Handlers = {
 export default fp(
   (fastify, _opts, done) => {
     const { bookRepository, authorRepository } =
-      fastify.getDecorator<Repositories>("repositories");
+      fastify.getDecorator<Repositories>(kRepositories);
 
-    fastify.decorate<Handlers>("handlers", {
+    fastify.decorate<Handlers>(kHandlers, {
       books: {
         getBookHandler: new GetBookHandler(bookRepository),
         getBooksHandler: new GetBooksHandler(bookRepository),

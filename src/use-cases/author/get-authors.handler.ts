@@ -1,4 +1,4 @@
-import type { IAuthorRepository } from "../../domain/interfaces/IAuthorRepository.ts";
+import type { IAuthorRepository } from "../../domain/interfaces/IAuthorRepository";
 
 export class GetAuthorsHandler {
   constructor(private readonly authorRepository: IAuthorRepository) {}

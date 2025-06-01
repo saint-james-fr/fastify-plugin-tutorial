@@ -6,7 +6,7 @@ import {
   ShowRouteParams,
   showRouteParamsSchema,
 } from "../../domain/schemas/params.schema";
-import type { Handlers } from "../../use-cases/index";
+import { type Handlers, kHandlers } from "../../use-cases/index";
 import fp from "fastify-plugin";
 
 export default fp(function (
@@ -16,7 +16,7 @@ export default fp(function (
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
 
   const { getAuthorsHandler, getAuthorHandler } =
-    typedFastify.getDecorator<Handlers>("handlers").authors;
+    typedFastify.getDecorator<Handlers>(kHandlers).authors;
 
   typedFastify.route({
     method: "GET",

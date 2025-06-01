@@ -2,6 +2,8 @@ import fp from "fastify-plugin";
 import { Book } from "../../domain/entities/book";
 import { Author } from "../../domain/entities/author";
 
+export const kDB = Symbol("db");
+
 export type DB = {
   books: Book[];
   authors: Author[];
@@ -9,7 +11,7 @@ export type DB = {
 
 export default fp(
   (fastify, _opts, done) => {
-    fastify.decorate("db", {
+    fastify.decorate(kDB, {
       books: [
         { id: 1, title: "Book 1", authorId: 1 },
         { id: 2, title: "Book 2", authorId: 2 },

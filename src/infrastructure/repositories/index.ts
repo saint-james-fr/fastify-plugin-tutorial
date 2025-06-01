@@ -1,7 +1,9 @@
 import fp from "fastify-plugin";
 import { BookRepository } from "./book.repository";
 import { AuthorRepository } from "./author.repository";
-import type { DB } from "../plugins/db.plugin";
+import { type DB, kDB } from "../plugins/db.plugin";
+
+export const kRepositories = Symbol("repositories");
 
 export type Repositories = {
   bookRepository: BookRepository;
@@ -10,9 +12,9 @@ export type Repositories = {
 
 export default fp(
   (fastify, _opts, done) => {
-    const db = fastify.getDecorator<DB>("db");
+    const db = fastify.getDecorator<DB>(kDB);
 
-    fastify.decorate<Repositories>("repositories", {
+    fastify.decorate<Repositories>(kRepositories, {
       bookRepository: new BookRepository({ books: db.books }),
       authorRepository: new AuthorRepository({ authors: db.authors }),
     });

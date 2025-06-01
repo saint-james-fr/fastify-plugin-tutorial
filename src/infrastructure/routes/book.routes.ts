@@ -6,7 +6,7 @@ import {
   showRouteParamsSchema,
 } from "../../domain/schemas/params.schema";
 import { FastifyInstance, FastifyPluginOptions, FastifyRequest } from "fastify";
-import type { Handlers } from "../../use-cases/index";
+import { type Handlers, kHandlers } from "../../use-cases/index";
 import fp from "fastify-plugin";
 
 export default fp(function (
@@ -16,7 +16,7 @@ export default fp(function (
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
 
   const { getBooksHandler, getBookHandler, createBookHandler } =
-    typedFastify.getDecorator<Handlers>("handlers").books;
+    typedFastify.getDecorator<Handlers>(kHandlers).books;
 
   typedFastify.route({
     method: "GET",
